@@ -1,3 +1,9 @@
+.title {
+  font-size: "48px" !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
 .button {
   font-size: "16px" !important;
   color: white !important; 
