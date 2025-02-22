@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <AppBar>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', gap: '24px' }}>
+        <Box sx={{ display: 'flex', gap: '50px' }}>
           <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
             <Button component={Link} to="/" className={styles.title}>Meeting Room Booking System</Button>
           </Typography>
@@ -16,7 +16,7 @@ export default function Header() {
             <Button component={Link} to="/BookingRecords" className={styles.button}>Booking Records</Button>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', gap: '24px' }}>
+        <Box sx={{ display: 'flex', gap: '50px' }}>
           <Button className={styles.button}>User Name Here</Button>
         </Box>
       </Toolbar>
