@@ -8,6 +8,9 @@ export default function MeetingRooms() {
   const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState('');
   const [newRoomLocation, setNewRoomLocation] = useState('');
+  const [newRoomCapacity, setNewRoomCapacity] = useState(0);
+  const [newRoomType, setNewRoomType] = useState('');
+  const [newRoomRemark, setNewRoomRemark] = useState('');
 
   useEffect(() => {
     axios.get<MeetingRoomResponse[]>('http://localhost:5154/api/meeting-room/list')
@@ -37,21 +40,27 @@ export default function MeetingRooms() {
     setOpen(false);
     setNewRoomName('');
     setNewRoomLocation('');
+    setNewRoomCapacity(0);
+    setNewRoomType('');
+    setNewRoomRemark('');
   };
 
   const handleSaveNewRoom = () => {
-    if (newRoomName && newRoomLocation) {
+    if (newRoomName && newRoomLocation && newRoomCapacity && newRoomType && newRoomRemark) {
       axios.post('http://localhost:5154/api/meeting-room', {
         name: newRoomName,
-        location: newRoomLocation
+        location: newRoomLocation,
+        capacity: newRoomCapacity,
+        type: newRoomType,
+        remark: newRoomRemark
       })
-      .then((response) => {
-        setMeetingRooms(prevRooms => [...prevRooms, response.data]);
-        handleCloseDialog();
-      })
-      .catch(error => {
-        console.error('Error adding new room:', error);
-      });
+        .then((response) => {
+          setMeetingRooms(prevRooms => [...prevRooms, response.data]);
+          handleCloseDialog();
+        })
+        .catch(error => {
+          console.error('Error adding new room:', error);
+        });
     }
   };
 
@@ -112,6 +121,36 @@ export default function MeetingRooms() {
             fullWidth
             value={newRoomLocation}
             onChange={(e) => setNewRoomLocation(e.target.value)}
+            margin="normal"
+          />
+          <TextField
+            label="Capacity"
+            variant="outlined"
+            type="number"
+            fullWidth
+            value={newRoomCapacity}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                setNewRoomCapacity(value === '' ? 0 : Number(value));
+              }
+            }}
+            margin="normal"
+          />
+          <TextField
+            label="Type"
+            variant="outlined"
+            fullWidth
+            value={newRoomType}
+            onChange={(e) => setNewRoomType(e.target.value)}
+            margin="normal"
+          />
+          <TextField
+            label="Remark"
+            variant="outlined"
+            fullWidth
+            value={newRoomRemark}
+            onChange={(e) => setNewRoomRemark(e.target.value)}
             margin="normal"
           />
         </DialogContent>

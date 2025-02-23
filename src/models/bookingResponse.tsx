@@ -4,6 +4,8 @@ export class BookingResponse {
         public startTime: Date,
         public endTime: Date,
         public meetingRoomId: string,
-        public userId: string
+        public userId: string,
+        public title: string,
+        public participants: string
     ) { }
 }

@@ -9,7 +9,6 @@ const MeetingRoomSelect = ({ onRoomChange }: { onRoomChange: (roomId: string) =>
   useEffect(() => {
     axios.get<MeetingRoomResponse[]>('http://localhost:5154/api/meeting-room/list')
       .then((response) => {
-        console.log(response.data);
         setRooms(response.data);
       })
       .catch((error) => {
