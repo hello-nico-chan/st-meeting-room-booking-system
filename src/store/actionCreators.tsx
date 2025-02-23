@@ -1,5 +1,12 @@
 import * as actionTypes from './constants';
 
+export const setUserId = (userId: string) => {
+    return {
+        type: actionTypes.SET_USER_ID,
+        payload: userId
+    };
+};
+
 export const setUserName = (username: string) => {
     return {
         type: actionTypes.SET_USER_NAME,

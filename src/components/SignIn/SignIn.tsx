@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import { UserLoginResponse } from '../../models/userLoginResponse';
-import { setUserName, setUserAccessToken, setUserRefreshToken } from '../../store/actionCreators';
+import { setUserId, setUserName, setUserAccessToken, setUserRefreshToken } from '../../store/actionCreators';
 import { useDispatch } from 'react-redux';
 
 export default function SignIn() {
@@ -27,6 +27,7 @@ export default function SignIn() {
       password: password
     })
       .then(response => {
+        dispatch(setUserId(response.data.id));
         dispatch(setUserName(response.data.username));
         dispatch(setUserAccessToken(response.data.accessToken));
         dispatch(setUserRefreshToken(response.data.refreshToken));

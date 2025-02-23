@@ -2,6 +2,7 @@ import { ReducerAction } from '../models/reducerAction';
 import * as actionTypes from './constants';
 
 const initialState = {
+    userId: localStorage.getItem('userId') || '',
     username: localStorage.getItem('username') || '',
     userAccessToken: localStorage.getItem('accessToken') || '',
     userRefreshToken: localStorage.getItem('refreshToken') || ''
@@ -9,6 +10,12 @@ const initialState = {
 
 function reducer(state = initialState, action: ReducerAction) {
     switch (action.type) {
+        case actionTypes.SET_USER_ID:
+            localStorage.setItem('userId', action.payload);
+            return {
+                ...state,
+                userId: action.payload
+            };
         case actionTypes.SET_USER_NAME:
             localStorage.setItem('username', action.payload);
             return {
@@ -28,6 +35,7 @@ function reducer(state = initialState, action: ReducerAction) {
                 userRefreshToken: action.payload
             };
         case actionTypes.SIGN_OUT:
+            localStorage.removeItem('userId');
             localStorage.removeItem('username');
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');

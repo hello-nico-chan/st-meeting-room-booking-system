@@ -32,8 +32,8 @@ const Calendar = ({ roomId }: { roomId: string }) => {
           meetingRoomId: booking.meetingRoomId,
           title: booking.title,
           participants: booking.participants,
-          start: new Date(booking.startTime),
-          end: new Date(booking.endTime),
+          startTime: new Date(booking.startTime),
+          endTime: new Date(booking.endTime),
         }));
         setEvents(bookings);
       })
@@ -61,14 +61,50 @@ const Calendar = ({ roomId }: { roomId: string }) => {
     setDialogOpen(false);
   };
 
+  const handleSubmitBooking = () => {
+    const bookingRequest = {
+      userId: localStorage.getItem('userId'),
+      meetingRoomId: roomId,
+      title,
+      participants,
+      startTime: startTime.toDate(),
+      endTime: endTime.toDate(),
+    };
+
+    axios.post<BookingResponse>('http://localhost:5154/api/booking', bookingRequest)
+      .then((response) => {
+        setEvents(prevEvents => [...prevEvents, {
+          id: response.data.id,
+          userId: response.data.userId,
+          meetingRoomId: response.data.meetingRoomId,
+          title: response.data.title,
+          participants: response.data.participants,
+          startTime: new Date(response.data.startTime),
+          endTime: new Date(response.data.endTime),
+        }]);
+        setDialogOpen(false);
+        setTitle('');
+        setParticipants('');
+        setStartTime(null);
+        setEndTime(null);
+      })
+      .catch((error) => {
+        if (error.response?.status === 409) {
+          alert('The selected time slot is already booked.');
+        } else {
+          console.error('Failed to book meeting room:', error);
+        }
+      });
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <Paper style={{ padding: 16 }}>
         <BigCalendar
           localizer={localizer}
           events={events}
-          startAccessor="start"
-          endAccessor="end"
+          startAccessor="startTime"
+          endAccessor="endTime"
           style={{ height: 500 }}
           views={['month', 'week', 'day']}
           date={selectedDate}
@@ -81,7 +117,7 @@ const Calendar = ({ roomId }: { roomId: string }) => {
 
         <Dialog open={dialogOpen} onClose={handleCloseDialog}>
           <DialogTitle>Book a meeting room</DialogTitle>
-          <DialogContent sx={{width: 500}}>
+          <DialogContent sx={{ width: 500 }}>
             <Box p={2}>
               <Stack spacing={3}>
                 <TextField
@@ -121,8 +157,8 @@ const Calendar = ({ roomId }: { roomId: string }) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button variant="contained" color="primary">
-              submit
+            <Button variant="contained" color="primary" onClick={handleSubmitBooking}>
+              Submit
             </Button>
           </DialogActions>
         </Dialog>
