@@ -1,11 +1,20 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { signOut } from '../../store/actionCreators';
 
 export default function Header() {
   const username = useSelector((state: RootState) => state.username);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onSignout = () => {
+    dispatch(signOut());
+    localStorage.clear();
+    navigate('/');
+  }
   
   return (
     <AppBar>
@@ -21,7 +30,11 @@ export default function Header() {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: '50px' }}>
-          <div>{username === "" ? "NOT LOGGED IN" : username}</div>
+          {username === "" ? (
+            <div>NOT LOGGED IN</div>
+          ) : (
+            <Button color="inherit" onClick={onSignout}>{username} (Logout)</Button>
+          )}
         </Box>
       </Toolbar>
     </AppBar>

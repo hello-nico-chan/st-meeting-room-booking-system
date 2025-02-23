@@ -20,3 +20,9 @@ export const setUserRefreshToken = (refreshToken: string) => {
         payload: refreshToken
     };
 };
+
+export const signOut = () => {
+    return {
+        type: actionTypes.SIGN_OUT
+    };
+};
