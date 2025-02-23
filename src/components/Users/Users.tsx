@@ -6,7 +6,6 @@ import { UserResponse } from '../../models/userResponse';
 export default function Users() {
   const [users, setUsers] = useState<UserResponse[]>([]);
 
-  // 获取用户数据
   useEffect(() => {
     axios.get<UserResponse[]>('http://localhost:5154/api/user/list')
       .then(response => {

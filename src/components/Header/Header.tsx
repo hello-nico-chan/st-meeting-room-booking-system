@@ -24,6 +24,7 @@ export default function Header() {
             <Button component={Link} to="/" className={styles.title}>Meeting Room Booking System</Button>
           </Typography>
           <Box>
+            <Button component={Link} to="/Book" className={styles.button}>Book</Button>
             <Button component={Link} to="/MeetingRooms" className={styles.button}>Meeting Rooms</Button>
             <Button component={Link} to="/Users" className={styles.button}>Users</Button>
             <Button component={Link} to="/BookingRecords" className={styles.button}>Booking Records</Button>

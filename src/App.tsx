@@ -9,6 +9,7 @@ import Users from './components/Users';
 import SignIn from './components/SignIn';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/index'
+import Booking from './components/Booking';
 
 function App() {
   const userAccessToken = useSelector((state: RootState) => state.userAccessToken);
@@ -23,6 +24,7 @@ function App() {
         ) : (
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/Book" element={<Booking />} />
             <Route path="/MeetingRooms" element={<MeetingRooms />} />
             <Route path="/Users" element={<Users />} />
             <Route path="/BookingRecords" element={<BookingRecords />} />
