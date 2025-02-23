@@ -63,7 +63,7 @@ export default function MeetingRooms() {
         Add Meeting Room
       </Button>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ maxWidth: 800, margin: '0 auto' }}>
         <Table sx={{ minWidth: 650 }} aria-label="meeting rooms table">
           <TableHead>
             <TableRow>
@@ -82,7 +82,7 @@ export default function MeetingRooms() {
                 <TableCell>
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color="error"
                     size="small"
                     onClick={() => handleDelete(room.id)}
                   >
