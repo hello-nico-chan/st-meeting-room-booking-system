@@ -1,8 +1,12 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export default function Header() {
+  const username = useSelector((state: RootState) => state.username);
+  
   return (
     <AppBar>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -17,7 +21,7 @@ export default function Header() {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: '50px' }}>
-          <Button className={styles.button}>User Name Here</Button>
+          <div>{username === "" ? "NOT LOGGED IN" : username}</div>
         </Box>
       </Toolbar>
     </AppBar>
