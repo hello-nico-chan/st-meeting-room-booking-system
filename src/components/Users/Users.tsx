@@ -7,8 +7,10 @@ import { SERVER_URL } from '../../constants';
 export default function Users() {
   const [users, setUsers] = useState<UserResponse[]>([]);
 
+  const userIsAdmin = localStorage.getItem('isAdmin') === 'true';
+
   useEffect(() => {
-    axios.get<UserResponse[]>(`${SERVER_URL}/api/user/list`)
+    axios.get<UserResponse[]>(`${SERVER_URL}/user/list`)
       .then(response => {
         setUsers(response.data);
       })
@@ -37,7 +39,8 @@ export default function Users() {
             <TableRow>
               <TableCell>No.</TableCell>
               <TableCell>Username</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>User Type</TableCell>
+              {userIsAdmin && <TableCell>Actions</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,7 +48,8 @@ export default function Users() {
               <TableRow key={user.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{user.username}</TableCell>
-                <TableCell>
+                <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
+                {userIsAdmin && <TableCell>
                   <Button
                     variant="contained"
                     color="error"
@@ -54,7 +58,7 @@ export default function Users() {
                   >
                     Delete
                   </Button>
-                </TableCell>
+                </TableCell>}
               </TableRow>
             ))}
           </TableBody>

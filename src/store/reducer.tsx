@@ -4,6 +4,7 @@ import * as actionTypes from './constants';
 const initialState = {
     userId: localStorage.getItem('userId') || '',
     username: localStorage.getItem('username') || '',
+    userIsAdmin: localStorage.getItem('isAdmin') || '',
     userAccessToken: localStorage.getItem('accessToken') || '',
     userRefreshToken: localStorage.getItem('refreshToken') || ''
 };
@@ -22,6 +23,12 @@ function reducer(state = initialState, action: ReducerAction) {
                 ...state,
                 username: action.payload
             };
+        case actionTypes.SET_USER_IS_ADMIN:
+            localStorage.setItem('isAdmin', action.payload);
+            return {
+                ...state,
+                userIsAdmin: action.payload
+            };
         case actionTypes.SET_USER_ACCESS_TOKEN:
             localStorage.setItem('accessToken', action.payload);
             return {
@@ -37,6 +44,7 @@ function reducer(state = initialState, action: ReducerAction) {
         case actionTypes.SIGN_OUT:
             localStorage.removeItem('userId');
             localStorage.removeItem('username');
+            localStorage.removeItem('isAdmin');
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             return {

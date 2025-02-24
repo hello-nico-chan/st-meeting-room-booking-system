@@ -30,6 +30,7 @@ export default function SignIn() {
       .then(response => {
         dispatch(setUserId(response.data.id));
         dispatch(setUserName(response.data.username));
+        dispatch(setUserIsAdmin(response.data.isAdmin));
         dispatch(setUserAccessToken(response.data.accessToken));
         dispatch(setUserRefreshToken(response.data.refreshToken));
       })

@@ -72,6 +72,8 @@ export default function MeetingRooms() {
     }
   };
 
+  const userIsAdmin = localStorage.getItem('isAdmin') === 'true';
+
   const handleViewRoom = (room: MeetingRoomResponse) => {
     setCurrentRoom(room);
     setIsEditMode(false);
@@ -138,9 +140,9 @@ export default function MeetingRooms() {
     <div>
       <h2>Meeting Rooms</h2>
 
-      <Button variant="contained" color="primary" onClick={handleAddRoomClick} sx={{ marginBottom: 2 }}>
+      {userIsAdmin && <Button variant="contained" color="primary" onClick={handleAddRoomClick} sx={{ marginBottom: 2 }}>
         Add Meeting Room
-      </Button>
+      </Button>}
 
       <TableContainer component={Paper} sx={{ maxWidth: 800, margin: '0 auto' }}>
         <Table sx={{ minWidth: 650 }} aria-label="meeting rooms table">
@@ -167,11 +169,12 @@ export default function MeetingRooms() {
                     variant="contained"
                     color="info"
                     size="small"
+                    sx={{ margin: '0 5px' }}
                     onClick={() => handleViewRoom(room)}
                   >
                     View
                   </Button>
-                  <Button
+                  {userIsAdmin && <Button
                     variant="contained"
                     color="secondary"
                     size="small"
@@ -179,15 +182,16 @@ export default function MeetingRooms() {
                     onClick={() => handleEditRoom(room)}
                   >
                     Edit
-                  </Button>
-                  <Button
+                  </Button>}
+                  {userIsAdmin && <Button
                     variant="contained"
                     color="error"
                     size="small"
+                    sx={{ margin: '0 5px' }}
                     onClick={() => handleDeleteClick(room.id)}
                   >
                     Delete
-                  </Button>
+                  </Button>}
                 </TableCell>
               </TableRow>
             ))}

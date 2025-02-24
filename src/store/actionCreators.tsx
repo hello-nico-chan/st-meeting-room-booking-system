@@ -14,6 +14,13 @@ export const setUserName = (username: string) => {
     };
 };
 
+export const setUserIsAdmin = (isAdmin: boolean) => {
+    return {
+        type: actionTypes.SET_USER_IS_ADMIN,
+        payload: isAdmin
+    };
+};
+
 export const setUserAccessToken = (accessToken: string) => {
     return {
         type: actionTypes.SET_USER_ACCESS_TOKEN,
