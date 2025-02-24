@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import axios from 'axios';
 import { UserLoginResponse } from '../../models/userLoginResponse';
-import { setUserId, setUserName, setUserAccessToken, setUserRefreshToken } from '../../store/actionCreators';
+import { setUserId, setUserName, setUserIsAdmin, setUserAccessToken, setUserRefreshToken } from '../../store/actionCreators';
 import { useDispatch } from 'react-redux';
 import { SERVER_URL } from '../../constants';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,16 +36,32 @@ export default function SignIn() {
         dispatch(setUserRefreshToken(response.data.refreshToken));
       })
       .catch(error => {
-        console.error('Error:', error);
+        if (error.response?.status === 401) {
+          setErrorMessage('Invalid username or password.');
+          setOpenDialog(true);
+        } else {
+          console.error('Error:', error);
+        }
       });
   };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
-    <div>
-      <h1>登录</h1>
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '400px',
+        margin: '0 auto',
+        padding: 2
+      }}
+    >
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="用户名"
+          label="Username"
           variant="outlined"
           margin="normal"
           fullWidth
@@ -52,7 +69,7 @@ export default function SignIn() {
           onChange={handleUsernameChange}
         />
         <TextField
-          label="密码"
+          label="Password"
           type="password"
           variant="outlined"
           margin="normal"
@@ -61,9 +78,26 @@ export default function SignIn() {
           onChange={handlePasswordChange}
         />
         <Button type="submit" variant="contained" color="primary" fullWidth>
-          登录
+          Login
         </Button>
       </form>
-    </div>
+
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-descriptiga on"
+      >
+        <DialogTitle id="alert-dialog-title">Login failed</DialogTitle>
+        <DialogContent>
+          <p>{errorMessage}</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 }
