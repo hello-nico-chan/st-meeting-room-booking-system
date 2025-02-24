@@ -68,8 +68,8 @@ const Calendar = ({ roomId }: { roomId: string }) => {
       meetingRoomId: roomId,
       title,
       participants,
-      startTime: startTime?.toDate(),
-      endTime: endTime?.toDate(),
+      startTime: startTime?.local().toDate(),
+      endTime: endTime?.local().toDate(),
     };
 
     axios.post<BookingResponse>(`${SERVER_URL}/booking`, bookingRequest)
