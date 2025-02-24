@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calendar';
 import moment from 'moment';
 import axios from 'axios';
 import { Paper, Dialog, DialogTitle, DialogContent, DialogActions, Button, Stack, Box, TextField } from '@mui/material';
@@ -14,7 +14,7 @@ const localizer = momentLocalizer(moment);
 const Calendar = ({ roomId }: { roomId: string }) => {
   const [events, setEvents] = useState<BookingResponse[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedView, setSelectedView] = useState<string>('month');
+  const [selectedView, setSelectedView] = useState<View>('month');
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const [title, setTitle] = useState<string>('');
@@ -47,7 +47,7 @@ const Calendar = ({ roomId }: { roomId: string }) => {
     setSelectedDate(date);
   };
 
-  const handleViewChange = (view: string) => {
+  const handleViewChange = (view: View) => {
     setSelectedView(view);
   };
 
@@ -68,8 +68,8 @@ const Calendar = ({ roomId }: { roomId: string }) => {
       meetingRoomId: roomId,
       title,
       participants,
-      startTime: startTime.toDate(),
-      endTime: endTime.toDate(),
+      startTime: startTime?.toDate(),
+      endTime: endTime?.toDate(),
     };
 
     axios.post<BookingResponse>(`${SERVER_URL}/booking`, bookingRequest)
@@ -144,14 +144,30 @@ const Calendar = ({ roomId }: { roomId: string }) => {
                   value={startTime}
                   ampm={false}
                   onChange={(newValue) => setStartTime(newValue)}
-                  renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
+                  slots={{
+                    textField: TextField,
+                  }}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      margin: 'normal',
+                    },
+                  }}
                 />
                 <DateTimePicker
                   label="End Time"
                   value={endTime}
                   ampm={false}
                   onChange={(newValue) => setEndTime(newValue)}
-                  renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
+                  slots={{
+                    textField: TextField,
+                  }}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      margin: 'normal',
+                    },
+                  }}
                 />
               </Stack>
             </Box>

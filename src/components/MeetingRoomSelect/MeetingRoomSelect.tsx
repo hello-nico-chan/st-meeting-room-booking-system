@@ -22,7 +22,10 @@ const MeetingRoomSelect = ({ onRoomChange }: { onRoomChange: (roomId: string) =>
       <InputLabel>Choose A Meeting Room</InputLabel>
       <Select
         label="Choose A Meeting Room"
-        onChange={(e) => onRoomChange(e.target.value)}
+        onChange={(e) => {
+          const roomId = e.target.value as string;;
+          onRoomChange(roomId)
+        }}
       >
         {rooms.map((room: MeetingRoomResponse) => (
           <MenuItem key={room.id} value={room.id}>
