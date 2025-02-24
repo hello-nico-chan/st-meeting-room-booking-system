@@ -7,6 +7,7 @@ import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { BookingResponse } from '../../models/bookingResponse';
+import { SERVER_URL } from '../../constants';
 
 const localizer = momentLocalizer(moment);
 
@@ -24,7 +25,7 @@ const Calendar = ({ roomId }: { roomId: string }) => {
   useEffect(() => {
     if (!roomId) return;
 
-    axios.get<BookingResponse[]>(`http://localhost:5154/api/booking/list/${roomId}`)
+    axios.get<BookingResponse[]>(`${SERVER_URL}/booking/list/${roomId}`)
       .then((response) => {
         const bookings = response.data.map((booking: BookingResponse) => ({
           id: booking.id,
@@ -71,7 +72,7 @@ const Calendar = ({ roomId }: { roomId: string }) => {
       endTime: endTime.toDate(),
     };
 
-    axios.post<BookingResponse>('http://localhost:5154/api/booking', bookingRequest)
+    axios.post<BookingResponse>(`${SERVER_URL}/booking`, bookingRequest)
       .then((response) => {
         setEvents(prevEvents => [...prevEvents, {
           id: response.data.id,

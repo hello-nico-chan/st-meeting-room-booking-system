@@ -5,6 +5,7 @@ import axios from 'axios';
 import { UserLoginResponse } from '../../models/userLoginResponse';
 import { setUserId, setUserName, setUserAccessToken, setUserRefreshToken } from '../../store/actionCreators';
 import { useDispatch } from 'react-redux';
+import { SERVER_URL } from '../../constants';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -22,7 +23,7 @@ export default function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios.post<UserLoginResponse>('http://localhost:5154/api/user/login', {
+    axios.post<UserLoginResponse>(`${SERVER_URL}/user/login`, {
       username: username,
       password: password
     })

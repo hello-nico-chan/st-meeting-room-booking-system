@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { MeetingRoomResponse } from '../../models/meetingRoomResponse';
+import { SERVER_URL } from '../../constants';
 
 export default function MeetingRooms() {
   const [meetingRooms, setMeetingRooms] = useState<MeetingRoomResponse[]>([]);
@@ -17,7 +18,7 @@ export default function MeetingRooms() {
   const [roomToDelete, setRoomToDelete] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get<MeetingRoomResponse[]>('http://localhost:5154/api/meeting-room/list')
+    axios.get<MeetingRoomResponse[]>(`${SERVER_URL}/meeting-room/list`)
       .then(response => {
         setMeetingRooms(response.data);
       })
@@ -27,7 +28,7 @@ export default function MeetingRooms() {
   }, []);
 
   const handleDelete = (id: string) => {
-    axios.delete(`http://localhost:5154/api/meeting-room/${id}`)
+    axios.delete(`${SERVER_URL}/meeting-room/${id}`)
       .then(() => {
         setMeetingRooms(prevRooms => prevRooms.filter(room => room.id !== id));
       })
@@ -54,7 +55,7 @@ export default function MeetingRooms() {
 
   const handleSaveNewRoom = () => {
     if (newRoomName && newRoomLocation && newRoomCapacity && newRoomType && newRoomRemark) {
-      axios.post('http://localhost:5154/api/meeting-room', {
+      axios.post(`${SERVER_URL}/meeting-room`, {
         name: newRoomName,
         location: newRoomLocation,
         capacity: newRoomCapacity,
@@ -95,7 +96,7 @@ export default function MeetingRooms() {
 
   const handleSaveEditRoom = () => {
     if (currentRoom && newRoomName && newRoomLocation && newRoomCapacity && newRoomType && newRoomRemark) {
-      axios.put(`http://localhost:5154/api/meeting-room`, {
+      axios.put(`${SERVER_URL}/meeting-room`, {
         id: currentRoom.id,
         name: newRoomName,
         location: newRoomLocation,

@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import { UserResponse } from '../../models/userResponse';
+import { SERVER_URL } from '../../constants';
 
 export default function Users() {
   const [users, setUsers] = useState<UserResponse[]>([]);
 
   useEffect(() => {
-    axios.get<UserResponse[]>('http://localhost:5154/api/user/list')
+    axios.get<UserResponse[]>(`${SERVER_URL}/api/user/list`)
       .then(response => {
         setUsers(response.data);
       })
@@ -17,7 +18,7 @@ export default function Users() {
   }, []);
 
   const handleDelete = (id: string) => {
-    axios.delete(`http://localhost:5154/api/user/${id}`)
+    axios.delete(`${SERVER_URL}/user/${id}`)
       .then(() => {
         setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
       })

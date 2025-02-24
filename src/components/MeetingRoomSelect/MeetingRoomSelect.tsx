@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { MeetingRoomResponse } from '../../models/meetingRoomResponse';
+import { SERVER_URL } from '../../constants';
 
 const MeetingRoomSelect = ({ onRoomChange }: { onRoomChange: (roomId: string) => void }) => {
   const [rooms, setRooms] = useState<MeetingRoomResponse[]>([]);
 
   useEffect(() => {
-    axios.get<MeetingRoomResponse[]>('http://localhost:5154/api/meeting-room/list')
+    axios.get<MeetingRoomResponse[]>(`${SERVER_URL}/meeting-room/list`)
       .then((response) => {
         setRooms(response.data);
       })
